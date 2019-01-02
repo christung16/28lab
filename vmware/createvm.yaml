@@ -1,0 +1,39 @@
+---
+  - name: create VM
+    hosts: new_vm
+    gather_facts: false
+    become: yes
+    connection: local
+
+    roles:
+      - common
+
+    tasks:
+      - name: Create a VM on a Cluster
+        vmware_guest:
+          hostname: "{{ vc_hostname }}"
+          username: "{{ vc_username }}"
+          password: "{{ vc_password }}"
+          validate_certs: no
+          name: "{{ vm_name }}" 
+          state: poweredon
+          guest_id: centos64Guest
+          esxi_hostname: "{{ esxi_hostname }}"
+          folder: "/{{ vc_datacenter }}/vm"
+          datacenter: "{{ vc_datacenter }}"
+          disk:
+          - size_gb: 100
+            type: thin
+            autoselect_datastore: true
+          hardware:
+            memory_mb: 2048
+            num_cpus: 4
+            scsi: paravirtual
+          networks:
+          - name: VM Network
+            device_type: vmxnet3
+          - name: Flat
+            device_type: vmxnet3
+        register: deploy_vm
+
+      - debug: var=deploy_vm

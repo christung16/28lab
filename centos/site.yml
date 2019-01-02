@@ -1,0 +1,15 @@
+---
+  - name: initialize a new CentOS VM
+    hosts: new_centos
+    gather_facts: false
+    become: yes
+
+    roles:
+      - common
+
+    tasks:
+      - name: install Google Chrome
+        yum:
+          name: https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+          state: present
+

@@ -1,0 +1,26 @@
+---
+  - name: Change VM State
+    hosts: localhost
+    gather_facts: false
+    become: yes
+    connection: local
+
+    roles:
+      - common
+
+    tasks:
+      - name: Change a VM State
+        vmware_guest:
+          hostname: "{{ vc_hostname }}"
+          username: "{{ vc_username }}"
+          password: "{{ vc_password }}"
+          validate_certs: no
+          name: "{{ vm_name }}" 
+          state: "{{ vm_state }}"
+          folder: "/{{ vc_datacenter | default ('OOB-Datacenter') }}/vm"
+          #folder: "/{{ vc_datacenter }}/vm"
+          datacenter: "{{ vc_datacenter | default ('OOB-Datacenter') }}"
+          #datacenter: "{{ vc_datacenter }}"
+        register: state_vm
+
+      - debug: var=state_vm
