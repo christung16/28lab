@@ -1,3 +1,8 @@
 [new_vm]
-Desktop-2 vm_name='CentOS-Desktop-2' esxi_hostname='10.74.202.123' vc_datacenter='OOB-Datacenter'
-Desktop-3 vm_name='CentOS-Desktop-3' esxi_hostname='10.74.202.123' vc_datacenter='OOB-Datacenter'
+# Desktop-2 vm_name='CentOS-Desktop-2' esxi_hostname='10.74.202.123' vc_datacenter='OOB-Datacenter'
+# Desktop-3 vm_name='CentOS-Desktop-3' esxi_hostname='10.74.202.123' vc_datacenter='OOB-Datacenter'
+core vm_name='core' esxi_hostname='10.74.202.124' vc_datacenter='OOB-Datacenter' cpu=2 ram=4096 disk=2048 network_1='VM Network' ip_1='10.74.202.2' netmask_1='255.255.255.0' gateway_1='10.74.202.1' dns_1='64.104.123.145' network_2='Flat' new2_host='10.74.202.2' domain_name='28lab.local'
+wordpress vm_name='wordpress' esxi_hostname='10.74.202.124' vc_datacenter='OOB-Datacenter' cpu=2 ram=4096 disk=2048 network_1='VM Network' ip_1='10.74.202.4' netmask_1='255.255.255.0' gateway_1='10.74.202.1' dns_1='64.104.123.145' network_2='Flat' new2_host='10.74.202.4' domain_name='28lab.local'
+wordpress-2 vm_name='wordpress-2' esxi_hostname='10.74.202.124' vc_datacenter='OOB-Datacenter' cpu=2 ram=4096 disk=2048 network_1='VM Network' ip_1='10.74.202.5' netmask_1='255.255.255.0' gateway_1='10.74.202.1' dns_1='64.104.123.145' network_2='Flat' new2_host='10.74.202.5' domain_name='28lab.local'
+wordpress-3 vm_name='wordpress-3' esxi_hostname='10.74.202.124' vc_datacenter='OOB-Datacenter' cpu=2 ram=4096 disk=2048 network_1='VM Network' ip_1='dhcp' network_2='Flat' domain_name='28lab.local'
+

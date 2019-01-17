@@ -1,2 +1,5 @@
 [new_centos]
-10.74.202.23
+core
+
+[wordpress]
+wordpress

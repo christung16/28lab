@@ -1,0 +1,7 @@
+[portgroups]
+
+Flat-70 host='10.74.202.124' vswitch_name='10GvSwitch' portgroup_name='Flat' vlan_id='70' state=present
+Flat1-80 host='10.74.202.124' vswitch_name='10GvSwitch' portgroup_name='Flat1' vlan_id='80' state=present
+INT-998 host='10.74.202.124' vswitch_name='10GvSwitch' portgroup_name='INT' vlan_id='998' state=present
+SNAT-999 host='10.74.202.124' vswitch_name='10GvSwitch' portgroup_name='SNAT' vlan_id='999' state=present
+VMNetwork-60 host='10.74.202.124' vswitch_name='10GvSwitch' portgroup_name='VM Network' vlan_id='60' state=present

@@ -1,0 +1,43 @@
+---
+  - name: create VM
+    hosts: new_vm
+    gather_facts: false
+    become: yes
+
+    roles:
+      - common
+
+    tasks:
+      - name: check vmtools available
+        vmware_guest_tools_wait:
+           hostname: "{{ vc_hostname }}"
+           username: "{{ vc_username }}"
+           password: "{{ vc_password }}"
+           validate_certs: no
+           name: "{{ vm_name}}"
+           folder: "/{{ vc_datacenter }}/vm"
+        delegate_to: localhost
+        register: facts
+
+      - name: change vm ip address
+        shell:  "nmcli con mod ens192 ipv4.addresses {{ new2_host }}/24 ipv4.gateway 10.74.202.1 ipv4.dns 64.104.123.145,64.104.76.247 ipv4.dns-search 28lab.local ipv4.method manual"
+        tags: nmcli
+      - name: restart network
+        service:
+          name: network
+          state: restarted
+        tags: nmcli
+      - name: reboot vm
+        shell: shutdown -r +1
+        
+      - name: wait for reboot complete
+        local_action:
+          module: wait_for
+            port=22
+            host={{ new2_host }}
+            connect_timeout=20
+            sleep=5
+            delay=5
+            timeout=300
+        register: facts
+      - debug: var=facts

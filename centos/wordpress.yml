@@ -17,7 +17,7 @@
     - name: install LAMP
       yum:
         name: [httpd, mariadb, mariadb-server, php, php-common, php-mysql, php-gd, php-xml, php-mbstring, php-mcrypt, php-xmlrpc, unzip, wget]
-      state: present
+        state: present
     - name: start/enable httpd
       service: name=httpd state=started enabled=true
     - name: start/enable mariadb

@@ -17,23 +17,57 @@
           validate_certs: no
           name: "{{ vm_name }}" 
           state: poweredon
-          guest_id: centos64Guest
+          #guest_id: centos64Guest
+          guest_id: centos7_64Guest
           esxi_hostname: "{{ esxi_hostname }}"
           folder: "/{{ vc_datacenter }}/vm"
           datacenter: "{{ vc_datacenter }}"
           disk:
-          - size_gb: 100
+          - size_gb: "{{ disk }}"
             type: thin
             autoselect_datastore: true
           hardware:
-            memory_mb: 2048
-            num_cpus: 4
+            memory_mb: "{{ ram }}"
+            num_cpus: "{{ cpu }}"
             scsi: paravirtual
           networks:
-          - name: VM Network
-            device_type: vmxnet3
-          - name: Flat
-            device_type: vmxnet3
-        register: deploy_vm
+            - name: "{{ network_1 }}"
+              device_type: vmxnet3
+              type: static
+              start_connected: true
+            - name: "{{ network_2 }}"
+              device_type: vmxnet3
+              start_connected: true
+          wait_for_ip_address: false
+        register: deploy_vm_result
 
-      - debug: var=deploy_vm
+      - debug: var=deploy_vm_result
+      - debug: 
+          var: deploy_vm_result.instance.hw_eth0.ipaddresses[0]
+      - debug: 
+          var: deploy_vm_result.instance.hw_eth0.macaddress_dash
+      - name: create pxelinux.cfg ##path doesn't work as expected
+        template:
+          src: /var/lib/tftpboot/pxelinux.cfg/centos7_minimal.j2
+          dest: '/var/lib/tftpboot/pxelinux.cfg/01-{{ deploy_vm_result.instance.hw_eth0.macaddress_dash }}'
+      - name: create kickstart
+        template:
+          src: /var/lib/tftpboot/ks/centos7_minimal.ks.j2
+          dest: '/var/lib/tftpboot/ks/centos7_minimal_{{ deploy_vm_result.instance.hw_eth0.macaddress_dash }}.ks'
+      - name: Block of update /etc/hosts
+        block:
+          - name: add/replace line in /etc/hosts
+            lineinfile:
+              path: /etc/hosts
+              insertafter: EOF
+              regexp: '^{{ ip_1 }} '
+              line: '{{ ip_1 }} {{ vm_name }}.{{ domain_name }} {{ vm_name }}'
+              state: present
+          - name: sort /etc/hosts
+            shell: sort -k 1 -V -o /etc/hosts /etc/hosts
+          - name: backup /etc/hosts to /root/28lab/config/hosts
+            copy:
+              src: /etc/hosts
+              dest: /root/28lab/config/hosts
+              backup: yes
+        when: ! deploy_vm_result.instance.hw_eth0.ipaddresses

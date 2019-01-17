@@ -1,0 +1,7 @@
+::1             localhost6.localdomain6 localhost6
+127.0.0.1               localhost.localdomain localhost
+10.74.202.2 core.28lab.local core
+10.74.202.3 ansible.28lab.local ansible
+10.74.202.62 virl.28lab.local virl
+10.74.202.163 vcenter.28lab.local vcenter
+10.74.202.164 dcnm.28lab.local dcnm

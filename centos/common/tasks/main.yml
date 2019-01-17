@@ -1,5 +1,40 @@
 ---
 # tasks file for common
+- name: Enable proxy in yum
+  lineinfile:
+    path: /etc/yum.conf
+    insertafter: EOF
+    line: 'proxy=http://proxy.esl.cisco.com:80'
+    state: present
+
+- name: Install epel
+  yum:
+    name: epel-release
+    state: latest
+
+- name: Install all core packages
+  yum:
+    name: [httpd, python, dnsmasq, autossh, python-setuptools, python2-pip, python-devel]
+    state: present
+
+- name: upgrade pip (command line)
+  shell: pip install --upgrade pip
+  tags: easy_install
+
+- name: upgrade setuptools (command line)
+  shell: pip install --upgrade setuptools
+  tags: easy_install
+
+- name: Install Virtualenv (pip)
+  pip:
+    name: virtualenv
+  tags: pip
+
+- name: Install Ansible
+  pip:
+    name: ansible
+  tags: pip
+    
 - name: yum update all packages
   yum:
     name: '*'
