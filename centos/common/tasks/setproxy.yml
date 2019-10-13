@@ -1,0 +1,8 @@
+---
+# set proxy for 28/F Lab
+- name: Enable proxy in yum
+  lineinfile:
+    path: /etc/yum.conf
+    insertafter: EOF
+    line: 'proxy=http://proxy.esl.cisco.com:80'
+    state: present

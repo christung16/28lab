@@ -3,3 +3,9 @@ core
 
 [wordpress]
 wordpress
+
+[virtualbox_centos]
+127.0.0.1:8022 ansible_ssh_user=root
+
+[tetration]
+10.1.58.45 ansible_ssh_user=root

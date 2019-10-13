@@ -1,0 +1,25 @@
+---
+  - name: initialize a new CentOS VM
+    hosts: virtualbox_centos
+    gather_facts: true
+    become: yes
+    vars:
+      location: "virtualbox"
+      hostname: "virtualbox_centos7"
+      ntp_manage_config: true
+      ntp_enabled: true
+      ntp_servers:
+        - "0{{ '.' + ntp_area if ntp_area else '' }}.pool.ntp.org iburst"
+        - "1{{ '.' + ntp_area if ntp_area else '' }}.pool.ntp.org iburst"
+        - "2{{ '.' + ntp_area if ntp_area else '' }}.pool.ntp.org iburst"
+        - "3{{ '.' + ntp_area if ntp_area else '' }}.pool.ntp.org iburst"
+        - "stdtime.gov.hk iburst"
+      ntp_restrict:
+        - "127.0.0.1"
+        - "::1"
+        - "10.1.53.0/24"
+        - "10.1.54.0/24"
+       
+    roles:
+      - common
+      - geerlingguy.ntp

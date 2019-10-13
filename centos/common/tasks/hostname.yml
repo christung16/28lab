@@ -1,0 +1,12 @@
+---
+  - name: change hostname
+    hostname:
+      name: "{{ hostname }}"
+
+  - name: change /etc/hosts
+    lineinfile:
+      path: "/etc/hosts"
+      regexp: "{{ hostvars['127.0.0.1']['ansible_env'].SSH_CONNECTION.split(' ')[2] }}\t{{ hostvars['127.0.0.1']['ansible_hostname'] }}\t{{ hostvars['127.0.0.1']['ansible_hostname'] }}"
+      line: "{{ hostvars['127.0.0.1']['ansible_env'].SSH_CONNECTION.split(' ')[2] }}\t{{ hostvars['127.0.0.1']['ansible_hostname'] }}\t{{ hostvars['127.0.0.1']['ansible_hostname'] }}"
+      state: present
+      backup: yes 

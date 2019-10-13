@@ -1,0 +1,10 @@
+---
+  - name: test gather_facts
+    connection: local
+    hosts: virtualbox_centos
+    gather_facts: true
+
+    tasks:
+    - name: Test the facts
+      debug: 
+        var: "{{ hostvars['127.0.0.1']['ansible_hostname'] }}"
